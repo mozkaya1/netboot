@@ -1,0 +1,34 @@
+#!ipxe
+
+goto ${menu} ||
+
+:live_menu
+set os Grml
+menu ${os} - Current Arch [ ${arch} ]
+item --gap ${os} Versions
+item 2024.02-full ${space} ${os} 2024.02 full
+item 2024.02-small ${space} ${os} 2024.02 small
+choose live_version || goto live_exit
+goto ${live_version}
+
+
+:2024.02-full
+set squash_url ${live_endpoint}/debian-squash/releases/download/2024.02-22d50c75/filesystem.squashfs
+set kernel_url ${live_endpoint}/debian-squash/releases/download/2024.02-22d50c75/
+goto boot
+
+:2024.02-small
+set squash_url ${live_endpoint}/debian-squash/releases/download/2024.02-9927ba62/filesystem.squashfs
+set kernel_url ${live_endpoint}/debian-squash/releases/download/2024.02-9927ba62/
+goto boot
+
+
+:boot
+imgfree
+kernel ${kernel_url}vmlinuz boot=live fetch=${squash_url} initrd=initrd.magic ${cmdline}
+initrd ${kernel_url}initrd
+boot
+
+:live_exit
+clear menu
+exit 0

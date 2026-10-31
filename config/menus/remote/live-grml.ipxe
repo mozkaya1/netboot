@@ -1,0 +1,48 @@
+#!ipxe
+
+goto ${menu} ||
+
+:live_menu
+set os Grml
+set os_arch ${arch}
+iseq ${os_arch} x86_64 && set os_arch amd64 ||
+iseq ${os_arch} arm64 && set os_arch arm64 ||
+menu ${os} - Current Arch [ ${arch} ]
+item --gap ${os} Versions
+iseq ${os_arch} amd64 && item 2025.12-full-amd64 ${space} ${os} 2025.12 full - amd64 ||
+iseq ${os_arch} arm64 && item 2025.12-full-arm64 ${space} ${os} 2025.12 full - arm64 ||
+iseq ${os_arch} amd64 && item 2025.12-small-amd64 ${space} ${os} 2025.12 small - amd64 ||
+iseq ${os_arch} arm64 && item 2025.12-small-arm64 ${space} ${os} 2025.12 small - arm64 ||
+choose live_version || goto live_exit
+goto ${live_version}
+
+:2025.12-full-amd64
+set squash_url ${live_endpoint}/debian-squash/releases/download/2025.12-ee78df85/filesystem.squashfs
+set kernel_url ${live_endpoint}/debian-squash/releases/download/2025.12-ee78df85/
+goto boot
+
+:2025.12-full-arm64
+set squash_url ${live_endpoint}/debian-squash/releases/download/2025.12-f76c469c/filesystem.squashfs
+set kernel_url ${live_endpoint}/debian-squash/releases/download/2025.12-f76c469c/
+goto boot
+
+:2025.12-small-amd64
+set squash_url ${live_endpoint}/debian-squash/releases/download/2025.12-ca5dc013/filesystem.squashfs
+set kernel_url ${live_endpoint}/debian-squash/releases/download/2025.12-ca5dc013/
+goto boot
+
+:2025.12-small-arm64
+set squash_url ${live_endpoint}/debian-squash/releases/download/2025.12-d7d97ac4/filesystem.squashfs
+set kernel_url ${live_endpoint}/debian-squash/releases/download/2025.12-d7d97ac4/
+goto boot
+
+
+:boot
+imgfree
+kernel ${kernel_url}vmlinuz boot=live fetch=${squash_url} initrd=initrd.magic ${cmdline}
+initrd ${kernel_url}initrd
+boot
+
+:live_exit
+clear menu
+exit 0
