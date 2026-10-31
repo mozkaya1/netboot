@@ -4,6 +4,7 @@
 [![Stack](https://img.shields.io/badge/Stack-Linux%20%7C%20ProxyDHCP%20%7C%20TFTP%20%7C%20iPXE-orange)](#-tech-stack--skills-demonstrated)
 
 A lightweight, robust, and non-disruptive network boot solution that turns any PC on your local network bootable on-the-fly. Powered by **netboot.xyz**, **dnsmasq (ProxyDHCP)**, and **iVentoy**, this repository provides automated startup scripts and configurations to serve live Linux distributions, installers, and rescue utilities (Clonezilla, Partition Magic, etc.) without altering your existing core network router or primary DHCP server.
+
 ---
 
 ## 🏗️ Architecture & Core Concept
