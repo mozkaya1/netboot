@@ -5,5 +5,5 @@ sudo docker stop netbootxyz
 sudo systemctl stop dnsmasq.service
 
 echo "Starting iVentoy ..."
-sudo iventoy start
+sudo iventoy -R start
 
